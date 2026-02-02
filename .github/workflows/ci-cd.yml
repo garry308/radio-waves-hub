@@ -33,8 +33,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: react-build
-          path: build
+          name: react-dist
+          path: dist/
 
   deploy:
     needs: build-and-test
@@ -45,8 +45,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: react-build
-          path: build
+          name: react-dist
 
       - name: Copy build via SCP (by password)
         uses: appleboy/scp-action@v1
@@ -55,7 +54,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASS }}
           port: ${{ secrets.SSH_PORT }}
-          source: "build/*"
+          source: "dist/*"
           target: "/var/www/u2648232/data/www/your-wave.ru"
-          strip_components: 1  # убирает папку build, копирует файлы напрямую
+          strip_components: 1  # убирает папку dist, копирует файлы напрямую
           overwrite: true

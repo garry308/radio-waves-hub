@@ -1,5 +1,4 @@
 import { QueryClient } from "@tanstack/react-query";
-import {useRef} from "react";
 
 const WS_URL = "wss://back.your-wave.ru/api/live/nowplaying/websocket";
 

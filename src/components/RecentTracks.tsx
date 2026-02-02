@@ -1,10 +1,7 @@
 import {Link} from "react-router-dom";
-import {Layout} from "@/components/Layout";
-import heroBg from "@/assets/hero-bg.jpg";
-import {defaultData, elapsedDefaultData, secondsToMMSS, tsToHHMM} from "@/lib/utils.ts";
+import {defaultData, tsToHHMM} from "@/lib/utils.ts";
 import {useQuery} from "@tanstack/react-query";
-import Player from "@/components/Player.tsx";
-import TrackHistory from "@/components/TrackHistory.tsx";
+
 const RecentTracks = () => {
 	const {data: nowplaying} = useQuery(defaultData);
 

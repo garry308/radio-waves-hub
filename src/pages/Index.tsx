@@ -1,13 +1,141 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Play, Pause, Volume2, SkipForward, Music } from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Layout } from "@/components/Layout";
+import heroBg from "@/assets/hero-bg.jpg";
+
+// Mock data for now playing and recent tracks
+const nowPlaying = {
+  title: "Midnight Dreams",
+  artist: "Aurora Sky",
+  album: "Neon Horizons",
+  duration: "4:32",
+};
+
+const recentTracks = [
+  { id: 1, title: "Electric Sunrise", artist: "Synthwave Collective", time: "2 min ago" },
+  { id: 2, title: "Velvet Storm", artist: "The Night Riders", time: "6 min ago" },
+  { id: 3, title: "Digital Hearts", artist: "Pulse Theory", time: "10 min ago" },
+  { id: 4, title: "Ocean Drive", artist: "Coastal Dreams", time: "14 min ago" },
+];
 
 const Index = () => {
+  const [isPlaying, setIsPlaying] = useState(true);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroBg})` }}
+        >
+          <div className="absolute inset-0 bg-background/60" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 py-20">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Live Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/40 mb-8 animate-fade-in">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-sm font-medium text-primary">Live Now</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-gradient mb-6 animate-slide-up">
+              RadioWave
+            </h1>
+            <p className="font-body text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              Your gateway to endless music. Tune in to the rhythm of tomorrow.
+            </p>
+
+            {/* Now Playing Card */}
+            <div className="max-w-md mx-auto glass rounded-2xl p-6 animate-slide-up" style={{ animationDelay: "0.2s" }}>
+              <div className="flex items-center gap-4">
+                {/* Album Art Placeholder */}
+                <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 glow-primary">
+                  <Music className="w-8 h-8 text-primary-foreground" />
+                </div>
+                
+                {/* Track Info */}
+                <div className="flex-1 text-left min-w-0">
+                  <p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Now Playing</p>
+                  <h3 className="font-display text-xl text-foreground truncate">{nowPlaying.title}</h3>
+                  <p className="text-sm text-muted-foreground truncate">{nowPlaying.artist}</p>
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mt-4">
+                <div className="h-1 bg-secondary rounded-full overflow-hidden">
+                  <div className="h-full w-2/3 bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300" />
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-xs text-muted-foreground">2:45</span>
+                  <span className="text-xs text-muted-foreground">{nowPlaying.duration}</span>
+                </div>
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Volume2 className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform"
+                >
+                  {isPlaying ? (
+                    <Pause className="w-6 h-6 text-primary-foreground" />
+                  ) : (
+                    <Play className="w-6 h-6 text-primary-foreground ml-1" />
+                  )}
+                </button>
+                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <SkipForward className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Tracks Section */}
+      <section className="py-20 bg-card/30">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="font-display text-3xl md:text-4xl text-gradient">Recently Played</h2>
+            <Link 
+              to="/history" 
+              className="text-sm font-medium text-primary hover:text-accent transition-colors"
+            >
+              View All History →
+            </Link>
+          </div>
+
+          <div className="grid gap-4">
+            {recentTracks.map((track, index) => (
+              <div 
+                key={track.id}
+                className="glass rounded-xl p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors animate-slide-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center flex-shrink-0">
+                  <Music className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-foreground truncate">{track.title}</h4>
+                  <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
+                </div>
+                <span className="text-xs text-muted-foreground flex-shrink-0">{track.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Layout>
   );
 };
 

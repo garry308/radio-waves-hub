@@ -1,9 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
+import {useRef} from "react";
 
 const WS_URL = "wss://back.your-wave.ru/api/live/nowplaying/websocket";
 
 
 export function AzuraNowPlaying(queryClient: QueryClient, station = "station:your_wave") {
+	let intervalRef= null;
 	const socket = new WebSocket(WS_URL);
 
 	socket.onopen = () => {
@@ -14,6 +16,19 @@ export function AzuraNowPlaying(queryClient: QueryClient, station = "station:you
 				},
 			})
 		);
+	};
+
+	const startElapsedTimer = (duration: number) => {
+		if (intervalRef) {
+			clearInterval(intervalRef);
+		}
+
+		intervalRef = setInterval(() => {
+			queryClient.setQueryData(['elapsed_time'], (prev: number | undefined) => {
+				const newTime = (prev || 0) + 1;
+				return newTime < duration ? newTime : duration
+			});
+		}, 1000);
 	};
 
 	function handleSseData(ssePayload, useTime = true) {
@@ -30,6 +45,10 @@ export function AzuraNowPlaying(queryClient: QueryClient, station = "station:you
 			queryClient.setQueryData(['now_playing'], () => {
 				return jsonData.np;
 			});
+			queryClient.setQueryData(['elapsed_time'], () => {
+				return jsonData.np.now_playing.elapsed;
+			});
+			startElapsedTimer(jsonData.np.now_playing.duration);
 		}
 	}
 

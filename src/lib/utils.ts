@@ -41,3 +41,11 @@ export const defaultData = {
   },
   staleTime: Infinity,
 }
+
+export const elapsedDefaultData = {
+  queryKey: ['elapsed_time'],
+  queryFn: () => {
+    return null;
+  },
+  staleTime: Infinity
+}

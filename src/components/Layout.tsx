@@ -20,12 +20,6 @@ export const Layout = ({ children }: LayoutProps) => {
             </p>
             <div className="flex items-center gap-6">
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Политика конфиденциальности
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Условия использования
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Контакты
               </a>
             </div>

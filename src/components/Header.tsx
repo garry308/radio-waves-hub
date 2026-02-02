@@ -3,8 +3,9 @@ import { Radio, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Главная", path: "/" },
-  { label: "История треков", path: "/history" },
+  { label: "Главная", path: "#header" },
+  { label: "Недавно играло", path: "#recent" },
+  { label: "История треков", path: "#history" },
 ];
 
 export const Header = () => {
@@ -27,22 +28,14 @@ export const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-8 ">
+          <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`relative font-body text-sm font-medium transition-colors duration-200 hover:text-primary ${
-                  location.pathname === item.path
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }`}
+              <a
+                href={item.path}
+                className={`relative font-body text-sm font-medium transition-colors duration-200 hover:text-primary text-muted-foreground`}
               >
                 {item.label}
-                {location.pathname === item.path && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                )}
-              </Link>
+              </a>
             ))}
           </nav>
 

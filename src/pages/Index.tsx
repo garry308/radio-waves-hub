@@ -1,4 +1,5 @@
-import { Play, Pause, Volume2, SkipForward, Music } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Music } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
@@ -21,6 +22,7 @@ const recentTracks = [
 
 const Index = () => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const [volume, setVolume] = useState([75]);
 
   return (
     <Layout>
@@ -79,10 +81,7 @@ const Index = () => {
               </div>
 
               {/* Controls */}
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                  <Volume2 className="w-5 h-5" />
-                </button>
+              <div className="flex items-center justify-center gap-6 mt-4">
                 <button 
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform"
@@ -93,9 +92,28 @@ const Index = () => {
                     <Play className="w-6 h-6 text-primary-foreground ml-1" />
                   )}
                 </button>
-                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                  <SkipForward className="w-5 h-5" />
+              </div>
+
+              {/* Volume Slider */}
+              <div className="flex items-center gap-3 mt-4">
+                <button 
+                  onClick={() => setVolume(volume[0] > 0 ? [0] : [75])}
+                  className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {volume[0] === 0 ? (
+                    <VolumeX className="w-4 h-4" />
+                  ) : (
+                    <Volume2 className="w-4 h-4" />
+                  )}
                 </button>
+                <Slider
+                  value={volume}
+                  onValueChange={setVolume}
+                  max={100}
+                  step={1}
+                  className="flex-1"
+                />
+                <span className="text-xs text-muted-foreground w-8 text-right">{volume[0]}%</span>
               </div>
             </div>
           </div>

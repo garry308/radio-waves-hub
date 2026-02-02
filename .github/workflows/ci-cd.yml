@@ -46,6 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: react-dist
+          path: dist/
 
       - name: Copy build via SCP (by password)
         uses: appleboy/scp-action@v1

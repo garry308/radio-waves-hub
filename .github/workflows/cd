@@ -1,0 +1,22 @@
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-build
+          path: build
+
+      - name: Copy build via SCP
+        uses: horochx/deploy-via-scp@v1.1.0
+        with:
+          local: "build/*"
+          remote: "/var/www/u2648232/data/www/your-wave.ru"          # путь на сервере
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}     # можно не указывать, если 22
+          ensureRemote: true

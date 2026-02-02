@@ -14,10 +14,10 @@ const nowPlaying = {
 };
 
 const recentTracks = [
-  { id: 1, title: "Electric Sunrise", artist: "Synthwave Collective", time: "2 min ago" },
-  { id: 2, title: "Velvet Storm", artist: "The Night Riders", time: "6 min ago" },
-  { id: 3, title: "Digital Hearts", artist: "Pulse Theory", time: "10 min ago" },
-  { id: 4, title: "Ocean Drive", artist: "Coastal Dreams", time: "14 min ago" },
+  { id: 1, title: "Electric Sunrise", artist: "Synthwave Collective", time: "2 мин назад" },
+  { id: 2, title: "Velvet Storm", artist: "The Night Riders", time: "6 мин назад" },
+  { id: 3, title: "Digital Hearts", artist: "Pulse Theory", time: "10 мин назад" },
+  { id: 4, title: "Ocean Drive", artist: "Coastal Dreams", time: "14 мин назад" },
 ];
 
 const Index = () => {
@@ -42,15 +42,15 @@ const Index = () => {
             {/* Live Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/40 mb-8 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-sm font-medium text-primary">Live Now</span>
+              <span className="text-sm font-medium text-primary">В эфире</span>
             </div>
 
             {/* Title */}
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-gradient mb-6 animate-slide-up">
-              RadioWave
+              Твоя волна
             </h1>
             <p className="font-body text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Your gateway to endless music. Tune in to the rhythm of tomorrow.
+              Твой портал в мир бесконечной музыки. Настройся на ритм будущего.
             </p>
 
             {/* Now Playing Card */}
@@ -63,7 +63,7 @@ const Index = () => {
                 
                 {/* Track Info */}
                 <div className="flex-1 text-left min-w-0">
-                  <p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Now Playing</p>
+                  <p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Сейчас играет</p>
                   <h3 className="font-display text-xl text-foreground truncate">{nowPlaying.title}</h3>
                   <p className="text-sm text-muted-foreground truncate">{nowPlaying.artist}</p>
                 </div>
@@ -124,12 +124,12 @@ const Index = () => {
       <section className="py-20 bg-card/30">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="font-display text-3xl md:text-4xl text-gradient">Recently Played</h2>
+            <h2 className="font-display text-3xl md:text-4xl text-gradient">Недавно играло</h2>
             <Link 
               to="/history" 
               className="text-sm font-medium text-primary hover:text-accent transition-colors"
             >
-              View All History →
+              Вся история →
             </Link>
           </div>
 

@@ -3,8 +3,8 @@ import { Radio, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Track History", path: "/history" },
+  { label: "Главная", path: "/" },
+  { label: "История треков", path: "/history" },
 ];
 
 export const Header = () => {
@@ -23,7 +23,7 @@ export const Header = () => {
               </div>
               <div className="absolute inset-0 rounded-full bg-primary animate-pulse-ring opacity-50" />
             </div>
-            <span className="font-display text-2xl text-gradient">RadioWave</span>
+            <span className="font-display text-2xl text-gradient">Твоя волна</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -49,7 +49,7 @@ export const Header = () => {
           {/* Live Badge */}
           <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-destructive/20 border border-destructive/40">
             <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
-            <span className="text-xs font-semibold text-destructive uppercase tracking-wider">Live</span>
+            <span className="text-xs font-semibold text-destructive uppercase tracking-wider">В эфире</span>
           </div>
 
           {/* Mobile Menu Button */}

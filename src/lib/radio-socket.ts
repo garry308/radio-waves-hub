@@ -1,83 +1,78 @@
-import { useEffect, useRef, useState } from "react";
+import { QueryClient } from "@tanstack/react-query";
 
-const WS_URL = "wss://demo.azuracast.com/api/live/nowplaying/websocket";
+const WS_URL = "wss://back.your-wave.ru/api/live/nowplaying/websocket";
 
-export function useAzuraNowPlaying(station = "station:azuratest_radio") {
-	const [nowplaying, setNowplaying] = useState(null);
-	const [currentTime, setCurrentTime] = useState(0);
-	const socketRef = useRef(null);
 
-	useEffect(() => {
-		const socket = new WebSocket(WS_URL);
-		socketRef.current = socket;
+export function AzuraNowPlaying(queryClient: QueryClient, station = "station:your_wave") {
+	const socket = new WebSocket(WS_URL);
 
-		socket.onopen = () => {
-			socket.send(
-				JSON.stringify({
-					subs: {
-						[station]: { recover: true },
-					},
-				})
-			);
-		};
+	socket.onopen = () => {
+		socket.send(
+			JSON.stringify({
+				subs: {
+					[station]: { recover: true },
+				},
+			})
+		);
+	};
 
-		function handleSseData(ssePayload, useTime = true) {
-			const jsonData = ssePayload.data;
+	function handleSseData(ssePayload, useTime = true) {
+		const jsonData = ssePayload.data;
 
-			if (useTime && "current_time" in jsonData) {
-				setCurrentTime(jsonData.current_time);
-			}
 
-			if (jsonData.np) {
-				setNowplaying(jsonData.np);
-			}
+		if (useTime && "current_time" in jsonData) {
+			queryClient.setQueryData(['current_time'], () => {
+				return jsonData.current_time;
+			});
 		}
 
-		socket.onmessage = (e) => {
-			const jsonData = JSON.parse(e.data);
-			console.log(jsonData);
+		if (jsonData.np) {
+			queryClient.setQueryData(['now_playing'], () => {
+				return jsonData.np;
+			});
+		}
+	}
 
-			if ("connect" in jsonData) {
-				const connectData = jsonData.connect;
+	socket.onmessage = (e) => {
+		const jsonData = JSON.parse(e.data);
+		console.log(jsonData);
 
-				if ("data" in connectData) {
-					// Legacy SSE data
-					connectData.data.forEach((initialRow) => handleSseData(initialRow));
-				} else {
-					// New Centrifugo time format
-					if ("time" in connectData) {
-						setCurrentTime(Math.floor(connectData.time / 1000));
-					}
+		if ("connect" in jsonData) {
+			const connectData = jsonData.connect;
 
-					// New Centrifugo cached NowPlaying initial push.
-					for (const subName in connectData.subs) {
-						const sub = connectData.subs[subName];
-						if ("publications" in sub && sub.publications.length > 0) {
-							sub.publications.forEach((initialRow) =>
-								handleSseData(initialRow, false)
-							);
-						}
+			if ("data" in connectData) {
+				// Legacy SSE data
+				connectData.data.forEach((initialRow) => handleSseData(initialRow));
+			} else {
+				// New Centrifugo time format
+				if ("time" in connectData) {
+					queryClient.setQueryData(['current_time'], () => {
+						return Math.floor(connectData.time / 1000);
+					});
+				}
+
+				// New Centrifugo cached NowPlaying initial push.
+				for (const subName in connectData.subs) {
+					const sub = connectData.subs[subName];
+					if ("publications" in sub && sub.publications.length > 0) {
+						sub.publications.forEach((initialRow) =>
+							handleSseData(initialRow, false)
+						);
 					}
 				}
-			} else if ("pub" in jsonData) {
-				handleSseData(jsonData.pub);
 			}
-		};
+		} else if ("pub" in jsonData) {
+			handleSseData(jsonData.pub);
+		}
+	};
 
-		socket.onerror = (err) => {
-			console.error("WebSocket error", err);
-		};
+	socket.onerror = (err) => {
+		console.error("WebSocket error", err);
+	};
 
-		socket.onclose = () => {
-			console.log("WebSocket closed");
-		};
+	socket.onclose = () => {
+		console.log("WebSocket closed");
+	};
 
-		return () => {
-			if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-				socketRef.current.close();
-			}
-		};
-	}, [station]);
-
-	return { nowplaying, currentTime };
+	return {queryClient};
 }

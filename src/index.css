@@ -7,7 +7,8 @@
 /* Machérie font - using local or fallback to elegant serif */
 @font-face {
   font-family: 'Macherie';
-  src: local('Macherie'), local('Machérie');
+  src: url('/src/assets/fonts/Macherie/macherie.otf') format("opentype"),
+       url('/src/assets/fonts/Macherie/macherie.ttf') format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

@@ -4,20 +4,20 @@ import {useState, useRef} from "react";
 import {Link} from "react-router-dom";
 import {Layout} from "@/components/Layout";
 import heroBg from "@/assets/hero-bg.jpg";
-import {useAzuraNowPlaying} from "@/lib/radio-socket";
-import {secondsToMMSS, tsToHHMM} from "@/lib/utils.ts";
+import {defaultData, secondsToMMSS, tsToHHMM} from "@/lib/utils.ts";
+import {useQuery} from "@tanstack/react-query";
 
 const Index = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [volume, setVolume] = useState([75]);
-	const {nowplaying} = useAzuraNowPlaying();
+	const { data: nowplaying, isLoading } = useQuery(defaultData);
 	const audioRef = useRef(null);
 	const [lastVolume, setLastVolume] = useState([75]);
 	const play = () => {
 		const audio = audioRef.current;
 		if (!audio) return;
 
-		audio.src = "https://demo.azuracast.com/listen/azuratest_radio/radio.mp3";
+		audio.src = "https://back.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
 		audio.load();
 		audio.play();
 		setIsPlaying(true);
@@ -58,13 +58,6 @@ const Index = () => {
 				{/* Content */}
 				<div className="relative z-10 container mx-auto px-4 py-20">
 					<div className="max-w-4xl mx-auto text-center">
-						{/* Live Badge */}
-						<div
-							className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/40 mb-8 animate-fade-in">
-							<span className="w-2 h-2 rounded-full bg-primary animate-pulse"/>
-							<span className="text-sm font-medium text-primary">В эфире</span>
-						</div>
-
 						{/* Title */}
 						<h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-gradient mb-6 animate-slide-up">
 							Твоя волна
@@ -182,7 +175,7 @@ const Index = () => {
 
 					<div className="grid gap-4">
 
-						{nowplaying ? nowplaying.song_history.map((track, index) => (
+						{nowplaying && nowplaying.song_history.length > 0 ? nowplaying.song_history.map((track, index) => (
 							<div
 								key={track.sh_id}
 								className="glass rounded-xl p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors animate-slide-up"

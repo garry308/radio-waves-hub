@@ -10,7 +10,7 @@ import {useQuery} from "@tanstack/react-query";
 const Index = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [volume, setVolume] = useState([75]);
-	const { data: nowplaying, isLoading } = useQuery(defaultData);
+	const { data: nowplaying } = useQuery(defaultData);
 	const audioRef = useRef(null);
 	const [lastVolume, setLastVolume] = useState([75]);
 	const play = () => {

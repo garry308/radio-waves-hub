@@ -49,7 +49,7 @@ jobs:
           path: build
 
       - name: Copy build via SCP (by password)
-        uses: appleboy/scp-action@v1.0.3
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -58,3 +58,4 @@ jobs:
           source: "build/*"
           target: "/var/www/u2648232/data/www/your-wave.ru"
           strip_components: 1  # убирает папку build, копирует файлы напрямую
+          overwrite: true

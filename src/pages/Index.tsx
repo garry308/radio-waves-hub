@@ -29,7 +29,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBg})` }}
         >
@@ -50,7 +50,7 @@ const Index = () => {
               Твоя волна
             </h1>
             <p className="font-body text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Твой портал в мир бесконечной музыки. Настройся на ритм будущего.
+              Твой портал в мир красивой музыки.
             </p>
 
             {/* Now Playing Card */}
@@ -60,7 +60,7 @@ const Index = () => {
                 <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 glow-primary">
                   <Music className="w-8 h-8 text-primary-foreground" />
                 </div>
-                
+
                 {/* Track Info */}
                 <div className="flex-1 text-left min-w-0">
                   <p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Сейчас играет</p>
@@ -82,7 +82,7 @@ const Index = () => {
 
               {/* Controls */}
               <div className="flex items-center justify-center gap-6 mt-4">
-                <button 
+                <button
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform"
                 >
@@ -96,7 +96,7 @@ const Index = () => {
 
               {/* Volume Slider */}
               <div className="flex items-center gap-3 mt-4">
-                <button 
+                <button
                   onClick={() => setVolume(volume[0] > 0 ? [0] : [75])}
                   className="p-1 text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -125,8 +125,8 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-display text-3xl md:text-4xl text-gradient">Недавно играло</h2>
-            <Link 
-              to="/history" 
+            <Link
+              to="/history"
               className="text-sm font-medium text-primary hover:text-accent transition-colors"
             >
               Вся история →
@@ -135,7 +135,7 @@ const Index = () => {
 
           <div className="grid gap-4">
             {recentTracks.map((track, index) => (
-              <div 
+              <div
                 key={track.id}
                 className="glass rounded-xl p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}

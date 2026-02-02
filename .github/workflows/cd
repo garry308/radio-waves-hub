@@ -10,13 +10,13 @@
           name: react-build
           path: build
 
-      - name: Copy build via SCP
-        uses: horochx/deploy-via-scp@v1.1.0
+      - name: Copy build via SCP (by password)
+        uses: appleboy/scp-action@v1.0.3
         with:
-          local: "build/*"
-          remote: "/var/www/u2648232/data/www/your-wave.ru"          # путь на сервере
           host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}     # можно не указывать, если 22
-          ensureRemote: true
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "build/*"
+          target: "/var/www/u2648232/data/www/your-wave.ru"
+          strip_components: 1  # убирает папку build, копирует файлы напрямую

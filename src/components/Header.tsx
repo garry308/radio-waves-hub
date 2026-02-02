@@ -5,8 +5,6 @@ import { useState } from "react";
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Track History", path: "/history" },
-  { label: "Schedule", path: "/schedule" },
-  { label: "About", path: "/about" },
 ];
 
 export const Header = () => {

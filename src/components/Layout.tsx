@@ -16,17 +16,17 @@ export const Layout = ({ children }: LayoutProps) => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              © 2026 RadioWave. All rights reserved.
+              © 2026 Твоя волна. Все права защищены.
             </p>
             <div className="flex items-center gap-6">
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Privacy Policy
+                Политика конфиденциальности
               </a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Terms of Service
+                Условия использования
               </a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Contact
+                Контакты
               </a>
             </div>
           </div>

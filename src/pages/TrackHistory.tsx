@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { format, subDays, startOfDay, addHours, isWithinInterval } from "date-fns";
+import { ru } from "date-fns/locale";
 import { Calendar, Clock, Music, ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -119,9 +120,9 @@ const TrackHistory = () => {
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="font-display text-4xl md:text-5xl text-gradient mb-4">Track History</h1>
+          <h1 className="font-display text-4xl md:text-5xl text-gradient mb-4">История треков</h1>
           <p className="text-muted-foreground text-lg">
-            Explore our playlist archive. Filter by day and time to find what was playing.
+            Исследуй наш архив плейлистов. Фильтруй по дню и времени, чтобы узнать что играло.
           </p>
         </div>
 
@@ -131,7 +132,7 @@ const TrackHistory = () => {
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-4">
               <Calendar className="w-5 h-5 text-primary" />
-              <h3 className="font-medium text-foreground">Select Date</h3>
+              <h3 className="font-medium text-foreground">Выбрать дату</h3>
             </div>
             
             {/* Date Navigation */}
@@ -143,7 +144,7 @@ const TrackHistory = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <span className="font-display text-xl text-foreground min-w-[200px] text-center">
-                {format(selectedDate, "EEEE, MMM d")}
+                {format(selectedDate, "EEEE, d MMM", { locale: ru })}
               </span>
               <button
                 onClick={handleNextDay}
@@ -168,7 +169,7 @@ const TrackHistory = () => {
                         : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
                     }`}
                   >
-                    {index === 0 ? "Today" : index === 1 ? "Yesterday" : format(date, "EEE, MMM d")}
+                    {index === 0 ? "Сегодня" : index === 1 ? "Вчера" : format(date, "EEE, d MMM", { locale: ru })}
                   </button>
                 );
               })}
@@ -179,7 +180,7 @@ const TrackHistory = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Clock className="w-5 h-5 text-primary" />
-              <h3 className="font-medium text-foreground">Time Interval</h3>
+              <h3 className="font-medium text-foreground">Временной интервал</h3>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
@@ -190,9 +191,9 @@ const TrackHistory = () => {
                     ? "bg-primary text-primary-foreground glow-primary"
                     : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
                 }`}
-              >
-                All Day
-              </button>
+                >
+                  Весь день
+                </button>
               {timeIntervals.map((interval) => (
                 <button
                   key={interval.id}
@@ -213,9 +214,9 @@ const TrackHistory = () => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-muted-foreground">
-            Showing <span className="text-primary font-semibold">{filteredTracks.length}</span> tracks
+            Показано <span className="text-primary font-semibold">{filteredTracks.length}</span> треков
             {selectedInterval && (
-              <> from <span className="text-foreground">{timeIntervals.find(i => i.id === selectedInterval)?.label}</span></>
+              <> за <span className="text-foreground">{timeIntervals.find(i => i.id === selectedInterval)?.label}</span></>
             )}
           </p>
         </div>
@@ -225,9 +226,9 @@ const TrackHistory = () => {
           {filteredTracks.length === 0 ? (
             <div className="glass rounded-2xl p-12 text-center">
               <Music className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="font-display text-xl text-foreground mb-2">No tracks found</h3>
+              <h3 className="font-display text-xl text-foreground mb-2">Треки не найдены</h3>
               <p className="text-muted-foreground">
-                Try selecting a different date or time interval.
+                Попробуй выбрать другую дату или временной интервал.
               </p>
             </div>
           ) : (

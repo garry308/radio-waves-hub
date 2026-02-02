@@ -116,7 +116,7 @@ const Index = () => {
 										}}/>
 								</div>
 								<div className="flex justify-between mt-1">
-						<span
+						<span style={{opacity: 0}}
 							className="text-xs text-muted-foreground">{nowplaying ? secondsToMMSS(nowplaying.now_playing.elapsed) : '00:00'}</span>
 									<span
 										className="text-xs text-muted-foreground">{nowplaying ? secondsToMMSS(nowplaying.now_playing.duration) : '00:00'}</span>
@@ -173,7 +173,7 @@ const Index = () => {
 					<div className="flex items-center justify-between mb-8">
 						<h2 className="font-display text-3xl md:text-4xl text-gradient">Недавно играло</h2>
 						<Link
-							to="/history"
+							to="/history" style={{opacity: 0}}
 							className="text-sm font-medium text-primary hover:text-accent transition-colors"
 						>
 							Вся история →

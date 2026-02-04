@@ -14,29 +14,35 @@ const Player = () => {
 	const analyserRef = useRef(null);
 	const canvasRef = useRef(null);
 	const rafIdRef = useRef(null);
-	const [audioContext, setAudioContext] = useState(null);
+	const [isLoadedAnalyser, setIsLoadedAnalyser] = useState(false);
 
-	const play = () => {
+	const initializeVisualizer = () => {
 		const audio = audioRef.current;
 		if (!audio) return;
-
-		audio.src = "https://back.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
-		audio.load();
 
 		const context = new (window.AudioContext)();
 		const analyser = context.createAnalyser();
 		analyser.fftSize = 256;
 		const bufferLength = analyser.frequencyBinCount;
 		analyserRef.current = { analyser, bufferLength, dataArray: new Uint8Array(bufferLength) };
-
 		const source = context.createMediaElementSource(audio);
 		source.connect(analyser);
 		analyser.connect(context.destination);
 
-		setAudioContext(context);
+		setIsLoadedAnalyser(true);
+		visualize();
+	}
+	const play = () => {
+		const audio = audioRef.current;
+		if (!audio) return;
+
+		audio.src = "https://back.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
+		audio.load();
 		audio.play();
 		setIsPlaying(true);
-		visualize();
+
+		if (!isLoadedAnalyser)
+			initializeVisualizer()
 	};
 
 	const visualize = () => {
@@ -71,24 +77,6 @@ const Player = () => {
 		audio.removeAttribute("src");
 		audio.load();
 
-		if (audioContext) {
-			audioContext.close();
-			setAudioContext(null);
-		}
-		if (rafIdRef.current) {
-			cancelAnimationFrame(rafIdRef.current);
-			rafIdRef.current = null;
-		}
-
-		if (canvasRef.current) {
-			const ctx = canvasRef.current.getContext('2d');
-			ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-		}
-
-		if (analyserRef.current) {
-			analyserRef.current.dataArray.fill(0);
-		}
-
 		setIsPlaying(false);
 	};
 
@@ -100,7 +88,6 @@ const Player = () => {
 			audioRef.current.volume = (v / 100);
 		}
 	};
-
 	return (
 		<div className="max-w-md mx-auto glass rounded-2xl p-6 pb-0 animate-slide-up"
 			 style={{animationDelay: "0.2s"}}>

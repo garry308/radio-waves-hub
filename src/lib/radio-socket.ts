@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 
-const WS_URL = "wss://back.your-wave.ru/api/live/nowplaying/websocket";
+const WS_URL = "wss://backend.your-wave.ru/api/live/nowplaying/websocket";
 
 
 export function AzuraNowPlaying(queryClient: QueryClient, station = "station:your_wave") {

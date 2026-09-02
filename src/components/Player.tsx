@@ -36,7 +36,7 @@ const Player = () => {
 		const audio = audioRef.current;
 		if (!audio) return;
 
-		audio.src = "https://back.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
+		audio.src = "https://backend.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
 		audio.load();
 		audio.play();
 		setIsPlaying(true);

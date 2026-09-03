@@ -3,6 +3,7 @@ import {Slider} from "@/components/ui/slider";
 import {useState, useRef} from "react";
 import {defaultData, elapsedDefaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useQuery} from "@tanstack/react-query";
+import {Link} from "react-router-dom";
 
 const Player = () => {
 	const [isPlaying, setIsPlaying] = useState(false);

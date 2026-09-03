@@ -1,99 +1,20 @@
 import {Play, Pause, Volume2, VolumeX, Music} from "lucide-react";
 import {Slider} from "@/components/ui/slider";
-import {useState, useRef} from "react";
 import {defaultData, elapsedDefaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useQuery} from "@tanstack/react-query";
 import {Link} from "react-router-dom";
+import {usePlayer} from "@/contexts/PlayerContext";
 
 const Player = () => {
-	const [isPlaying, setIsPlaying] = useState(false);
-	const [volume, setVolume] = useState([75]);
 	const {data: nowplaying} = useQuery(defaultData);
 	const {data: elapsed_time} = useQuery(elapsedDefaultData);
-	const audioRef = useRef(null);
-	const [lastVolume, setLastVolume] = useState([75]);
-	const analyserRef = useRef(null);
-	const canvasRef = useRef(null);
-	const rafIdRef = useRef(null);
-	const [isLoadedAnalyser, setIsLoadedAnalyser] = useState(false);
+	const {isPlaying, toggle, volume, handleVolumeChange, toggleMute, registerCanvas} = usePlayer();
 
-	const initializeVisualizer = () => {
-		const audio = audioRef.current;
-		if (!audio) return;
-
-		const context = new (window.AudioContext)();
-		const analyser = context.createAnalyser();
-		analyser.fftSize = 256;
-		const bufferLength = analyser.frequencyBinCount;
-		analyserRef.current = { analyser, bufferLength, dataArray: new Uint8Array(bufferLength) };
-		const source = context.createMediaElementSource(audio);
-		source.connect(analyser);
-		analyser.connect(context.destination);
-
-		setIsLoadedAnalyser(true);
-		visualize();
-	}
-	const play = () => {
-		const audio = audioRef.current;
-		if (!audio) return;
-
-		audio.src = "https://backend.your-wave.ru/listen/your_wave/radio.mp3?" + new Date().getTime();
-		audio.load();
-		audio.play();
-		setIsPlaying(true);
-
-		if (!isLoadedAnalyser)
-			initializeVisualizer()
-	};
-
-	const visualize = () => {
-		const { analyser, bufferLength, dataArray } = analyserRef.current || {};
-		const canvas = canvasRef.current;
-		if (!analyser || !canvas) return;
-
-		const ctx = canvas.getContext('2d');
-		analyser.getByteFrequencyData(dataArray);
-
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-		const barWidth = (canvas.width / bufferLength);
-		let barHeight: number;
-		let x = 0;
-
-		for (let i = 0; i < bufferLength; i++) {
-			barHeight = (dataArray[i] / 255) * canvas.height;
-			ctx.fillStyle = `rgb(66, 170, 255)`;
-			ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-			x += barWidth + 1;
-		}
-
-		rafIdRef.current = requestAnimationFrame(visualize);
-	};
-
-	const pause = () => {
-		const audio = audioRef.current;
-		if (!audio) return;
-
-		audio.pause();
-		audio.removeAttribute("src");
-		audio.load();
-
-		setIsPlaying(false);
-	};
-
-	const handleVolumeChange = (v) => {
-		if (v > 0)
-			setLastVolume(v);
-		setVolume(v);
-		if (audioRef.current) {
-			audioRef.current.volume = (v / 100);
-		}
-	};
 	return (
 		<div className="max-w-md mx-auto glass rounded-2xl p-6 pb-0 animate-slide-up"
 			 style={{animationDelay: "0.2s"}}>
 			<div className="flex items-center gap-4">
-				{/* Album Art Placeholder */}
+				{/* Album Art */}
 				{nowplaying ? (
 					<Link
 						to={`/track/${nowplaying.now_playing.song.id}`}
@@ -148,12 +69,8 @@ const Player = () => {
 
 			{/* Controls */}
 			<div className="flex items-center justify-center gap-6 mt-4">
-				<audio ref={audioRef}
-					   preload="none"
-					   crossOrigin="anonymous">
-				</audio>
 				<button
-					onClick={isPlaying ? pause : play}
+					onClick={toggle}
 					className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform"
 				>
 					{isPlaying ? (
@@ -167,7 +84,7 @@ const Player = () => {
 			{/* Volume Slider */}
 			<div className="flex items-center gap-3 mt-4">
 				<button
-					onClick={() => handleVolumeChange(volume[0] > 0 ? [0] : [lastVolume])}
+					onClick={toggleMute}
 					className="p-1 text-muted-foreground hover:text-foreground transition-colors"
 				>
 					{volume[0] === 0 ? (
@@ -186,7 +103,7 @@ const Player = () => {
 				<span className="text-xs text-muted-foreground w-8 text-right">{volume[0]}%</span>
 			</div>
 			<canvas
-				ref={canvasRef}
+				ref={registerCanvas}
 				className="w-full mx-auto max-w-md rounded-2xl h-10 bg-transparent"
 				style={{width: 'calc(100% + 3rem)', marginLeft: '-1.5rem'}}
 			/>

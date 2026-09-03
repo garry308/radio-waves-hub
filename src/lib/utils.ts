@@ -31,6 +31,7 @@ export const defaultData = {
         elapsed: 0,
         duration: 0,
         song: {
+          id: '',
           art: heroBg,
           artist: 'Загрузка...',
           title: 'Загрузка...'

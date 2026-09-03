@@ -37,7 +37,7 @@ const RecentTracks = () => {
 							</div>
 							<span
 								className="text-xs text-muted-foreground flex-shrink-0">{tsToHHMM(track.played_at)}</span>
-						</div>
+						</Link>
 					)) : 'Загрузка...'}
 				</div>
 			</div>

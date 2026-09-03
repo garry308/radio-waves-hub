@@ -21,7 +21,8 @@ const RecentTracks = () => {
 				<div className="grid gap-4 grid-cols-1">
 
 					{nowplaying && nowplaying.song_history.length > 0 ? nowplaying.song_history.map((track, index) => (
-						<div
+						<Link
+							to={`/track/${track.song.id}`}
 							key={track.sh_id}
 							className="glass rounded-xl p-4 flex items-center gap-4 hover:bg-secondary/50 transition-colors animate-slide-up"
 							style={{animationDelay: `${index * 0.1}s`}}
@@ -36,7 +37,7 @@ const RecentTracks = () => {
 							</div>
 							<span
 								className="text-xs text-muted-foreground flex-shrink-0">{tsToHHMM(track.played_at)}</span>
-						</div>
+						</Link>
 					)) : 'Загрузка...'}
 				</div>
 			</div>

@@ -3,6 +3,7 @@ import {Slider} from "@/components/ui/slider";
 import {useState, useRef} from "react";
 import {defaultData, elapsedDefaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useQuery} from "@tanstack/react-query";
+import {Link} from "react-router-dom";
 
 const Player = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -94,10 +95,11 @@ const Player = () => {
 			<div className="flex items-center gap-4">
 				{/* Album Art Placeholder */}
 				{nowplaying ? (
-					<div
+					<Link
+						to={`/track/${nowplaying.now_playing.song.id}`}
 						className="bg-contain w-10 md:w-20 h-10 md:h-20 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 glow-primary"
 						style={{backgroundImage: `url(${nowplaying.now_playing.song.art})`}}>
-					</div>
+					</Link>
 				) : (
 					<div
 						className="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 glow-primary">
@@ -108,13 +110,19 @@ const Player = () => {
 				<div className="flex-1 text-left min-w-0">
 					<p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Сейчас
 						играет</p>
-					<h3 className="font-display text-sm md:text-xl text-foreground truncate">{
-						nowplaying ? nowplaying.now_playing.song.title : 'Загрузка...'}
-					</h3>
-					<p className="text-sm text-muted-foreground truncate">{
-						nowplaying ? nowplaying.now_playing.song.artist : 'Загрузка...'
-					}
-					</p>
+					{nowplaying ? (
+						<Link to={`/track/${nowplaying.now_playing.song.id}`} className="block group">
+							<h3 className="font-display text-sm md:text-xl text-foreground truncate group-hover:text-primary transition-colors">
+								{nowplaying.now_playing.song.title}
+							</h3>
+							<p className="text-sm text-muted-foreground truncate">{nowplaying.now_playing.song.artist}</p>
+						</Link>
+					) : (
+						<>
+							<h3 className="font-display text-sm md:text-xl text-foreground truncate">Загрузка...</h3>
+							<p className="text-sm text-muted-foreground truncate">Загрузка...</p>
+						</>
+					)}
 				</div>
 			</div>
 

@@ -111,6 +111,43 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 		};
 	}, []);
 
+	// --- Media Session API ---
+	const song = nowplaying?.now_playing?.song;
+
+	useEffect(() => {
+		if (!("mediaSession" in navigator) || !song?.title) return;
+
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: song.title || "Твоя волна",
+			artist: song.artist || "Твоя волна",
+			album: "Твоя волна",
+			artwork: song.art
+				? [
+					{src: song.art, sizes: "512x512", type: "image/jpeg"},
+					{src: song.art, sizes: "256x256", type: "image/jpeg"},
+					{src: song.art, sizes: "96x96", type: "image/jpeg"},
+				]
+				: [],
+		});
+	}, [song?.title, song?.artist, song?.art]);
+
+	useEffect(() => {
+		if (!("mediaSession" in navigator)) return;
+
+		navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+		navigator.mediaSession.setActionHandler("play", () => playRef.current());
+		navigator.mediaSession.setActionHandler("pause", () => pauseRef.current());
+		navigator.mediaSession.setActionHandler("stop", () => pauseRef.current());
+		// Радиоэфир: перемотка и переключение треков недоступны
+		for (const action of ["seekbackward", "seekforward", "seekto", "previoustrack", "nexttrack"] as const) {
+			try {
+				navigator.mediaSession.setActionHandler(action, null);
+			} catch {
+				// действие не поддерживается браузером
+			}
+		}
+	}, [isPlaying]);
+
 	return (
 		<PlayerContext.Provider
 			value={{isPlaying, volume, play, pause, toggle, handleVolumeChange, toggleMute, registerCanvas}}>

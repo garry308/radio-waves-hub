@@ -93,7 +93,10 @@ const TrackDetail = () => {
 								</div>
 							</div>
 
+							<StreamingLinks title={track.title} artist={track.artist}/>
+
 							{plays.length > 0 && (
+
 								<div className="mt-10">
 									<h2 className="font-display text-2xl text-gradient mb-4">Когда играл</h2>
 									<div className="grid gap-3">

@@ -96,6 +96,9 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 
 	const toggle = () => (isPlaying ? pause() : play());
 
+	playRef.current = play;
+	pauseRef.current = pause;
+
 	const handleVolumeChange = (v: number[]) => {
 		if (v[0] > 0) setLastVolume(v);
 		setVolume(v);

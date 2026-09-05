@@ -8,9 +8,6 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const location = useLocation();
-  const showMiniPlayer = location.pathname !== "/";
-
   return (
     <div className="min-h-screen bg-gradient-hero">
       <Header />

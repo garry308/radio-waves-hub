@@ -25,6 +25,9 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [volume, setVolume] = useState([75]);
 	const [lastVolume, setLastVolume] = useState([75]);
+	const {data: nowplaying} = useQuery(defaultData);
+	const playRef = useRef<() => void>(() => {});
+	const pauseRef = useRef<() => void>(() => {});
 
 	const visualize = useCallback(() => {
 		rafIdRef.current = requestAnimationFrame(visualize);

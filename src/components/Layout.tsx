@@ -1,11 +1,16 @@
 import { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
+import MiniPlayer from "./MiniPlayer";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {
+  const location = useLocation();
+  const showMiniPlayer = location.pathname !== "/";
+
   return (
     <div className="min-h-screen bg-gradient-hero">
       <Header />
@@ -26,6 +31,12 @@ export const Layout = ({ children }: LayoutProps) => {
           </div>
         </div>
       </footer>
+      {showMiniPlayer && (
+        <>
+          <div className="h-24" />
+          <MiniPlayer />
+        </>
+      )}
     </div>
   );
 };

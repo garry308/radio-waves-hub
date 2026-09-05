@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TrackDetail from "./pages/TrackDetail";
 import {AzuraNowPlaying} from "@/lib/radio-socket.ts";
+import {PlayerProvider} from "@/contexts/PlayerContext";
 
 const queryClient = new QueryClient();
 AzuraNowPlaying(queryClient);
@@ -16,12 +17,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PlayerProvider>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/track/:id" element={<TrackDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </PlayerProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

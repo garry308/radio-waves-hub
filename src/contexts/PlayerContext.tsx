@@ -1,4 +1,6 @@
 import {createContext, useCallback, useContext, useEffect, useRef, useState, ReactNode} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {defaultData} from "@/lib/utils";
 
 const STREAM_URL = "https://backend.your-wave.ru/listen/your_wave/radio.mp3";
 

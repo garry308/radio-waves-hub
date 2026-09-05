@@ -1,4 +1,6 @@
 import {createContext, useCallback, useContext, useEffect, useRef, useState, ReactNode} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {defaultData} from "@/lib/utils";
 
 const STREAM_URL = "https://backend.your-wave.ru/listen/your_wave/radio.mp3";
 
@@ -23,6 +25,9 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [volume, setVolume] = useState([75]);
 	const [lastVolume, setLastVolume] = useState([75]);
+	const {data: nowplaying} = useQuery(defaultData);
+	const playRef = useRef<() => void>(() => {});
+	const pauseRef = useRef<() => void>(() => {});
 
 	const visualize = useCallback(() => {
 		rafIdRef.current = requestAnimationFrame(visualize);
@@ -91,6 +96,9 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 
 	const toggle = () => (isPlaying ? pause() : play());
 
+	playRef.current = play;
+	pauseRef.current = pause;
+
 	const handleVolumeChange = (v: number[]) => {
 		if (v[0] > 0) setLastVolume(v);
 		setVolume(v);
@@ -108,6 +116,43 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 			if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
 		};
 	}, []);
+
+	// --- Media Session API ---
+	const song = nowplaying?.now_playing?.song;
+
+	useEffect(() => {
+		if (!("mediaSession" in navigator) || !song?.title) return;
+
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: song.title || "Твоя волна",
+			artist: song.artist || "Твоя волна",
+			album: "Твоя волна",
+			artwork: song.art
+				? [
+					{src: song.art, sizes: "512x512", type: "image/jpeg"},
+					{src: song.art, sizes: "256x256", type: "image/jpeg"},
+					{src: song.art, sizes: "96x96", type: "image/jpeg"},
+				]
+				: [],
+		});
+	}, [song?.title, song?.artist, song?.art]);
+
+	useEffect(() => {
+		if (!("mediaSession" in navigator)) return;
+
+		navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+		navigator.mediaSession.setActionHandler("play", () => playRef.current());
+		navigator.mediaSession.setActionHandler("pause", () => pauseRef.current());
+		navigator.mediaSession.setActionHandler("stop", () => pauseRef.current());
+		// Радиоэфир: перемотка и переключение треков недоступны
+		for (const action of ["seekbackward", "seekforward", "seekto", "previoustrack", "nexttrack"] as const) {
+			try {
+				navigator.mediaSession.setActionHandler(action, null);
+			} catch {
+				// действие не поддерживается браузером
+			}
+		}
+	}, [isPlaying]);
 
 	return (
 		<PlayerContext.Provider

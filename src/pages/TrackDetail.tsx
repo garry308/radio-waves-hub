@@ -2,7 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {ArrowLeft, Music, Clock, Disc3, Tag} from "lucide-react";
 import {Layout} from "@/components/Layout";
-import {defaultData, secondsToMMSS, tsToHHMM} from "@/lib/utils.ts";
+import {defaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useTrackById} from "@/hooks/use-track";
 import {StreamingLinks} from "@/components/StreamingLinks";
 
@@ -10,7 +10,7 @@ import {StreamingLinks} from "@/components/StreamingLinks";
 const TrackDetail = () => {
 	const {id} = useParams();
 	const {data: nowplaying} = useQuery(defaultData);
-	const {track, isLoading, plays} = useTrackById(id, nowplaying);
+	const {track, isLoading} = useTrackById(id, nowplaying);
 
 	return (
 		<Layout>
@@ -97,20 +97,6 @@ const TrackDetail = () => {
 
 							<StreamingLinks title={track.title} artist={track.artist}/>
 
-							{plays.length > 0 && (
-
-								<div className="mt-10">
-									<h2 className="font-display text-2xl text-gradient mb-4">Когда играл</h2>
-									<div className="grid gap-3">
-										{plays.map((p) => (
-											<div key={p.sh_id} className="glass rounded-xl p-4 flex items-center justify-between">
-												<span className="text-sm text-foreground">{p.label}</span>
-												<span className="text-xs text-muted-foreground">{tsToHHMM(p.played_at)}</span>
-											</div>
-										))}
-									</div>
-								</div>
-							)}
 
 							{track.lyrics && (
 								<div className="mt-10">

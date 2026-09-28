@@ -10,7 +10,7 @@ import {StreamingLinks} from "@/components/StreamingLinks";
 const TrackDetail = () => {
 	const {id} = useParams();
 	const {data: nowplaying} = useQuery(defaultData);
-	const {track, isLoading, plays} = useTrackById(id, nowplaying);
+	const {track, isLoading} = useTrackById(id, nowplaying);
 
 	return (
 		<Layout>

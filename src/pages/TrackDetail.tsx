@@ -97,20 +97,6 @@ const TrackDetail = () => {
 
 							<StreamingLinks title={track.title} artist={track.artist}/>
 
-							{plays.length > 0 && (
-
-								<div className="mt-10">
-									<h2 className="font-display text-2xl text-gradient mb-4">Когда играл</h2>
-									<div className="grid gap-3">
-										{plays.map((p) => (
-											<div key={p.sh_id} className="glass rounded-xl p-4 flex items-center justify-between">
-												<span className="text-sm text-foreground">{p.label}</span>
-												<span className="text-xs text-muted-foreground">{tsToHHMM(p.played_at)}</span>
-											</div>
-										))}
-									</div>
-								</div>
-							)}
 
 							{track.lyrics && (
 								<div className="mt-10">

@@ -23,8 +23,18 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const rafIdRef = useRef<number | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [volume, setVolume] = useState([75]);
-	const [lastVolume, setLastVolume] = useState([75]);
+	const [volume, setVolume] = useState<number[]>(() => {
+		const v = Number(localStorage.getItem("player_volume"));
+		return localStorage.getItem("player_volume") !== null && v >= 0 && v <= 100 ? [v] : [75];
+	});
+	const [lastVolume, setLastVolume] = useState<number[]>(() => {
+		const v = Number(localStorage.getItem("player_last_volume"));
+		return v > 0 && v <= 100 ? [v] : [75];
+	});
+	useEffect(() => {
+		localStorage.setItem("player_volume", String(volume[0]));
+		localStorage.setItem("player_last_volume", String(lastVolume[0]));
+	}, [volume, lastVolume]);
 	const {data: nowplaying} = useQuery(defaultData);
 	const playRef = useRef<() => void>(() => {});
 	const pauseRef = useRef<() => void>(() => {});

@@ -19,6 +19,7 @@ const MainScreen = () => {
 					{/* Title */}
 					<h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-gradient mb-6 animate-slide-up">
 						Твоя волна
+						<span className="sr-only"> — онлайн-радио красивой музыки</span>
 					</h1>
 					<p className="font-body text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto animate-slide-up"
 					   style={{animationDelay: "0.1s"}}>

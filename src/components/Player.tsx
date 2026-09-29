@@ -71,6 +71,7 @@ const Player = () => {
 			<div className="flex items-center justify-center gap-6 mt-4">
 				<button
 					onClick={toggle}
+						aria-label={isPlaying ? "Пауза" : "Слушать эфир"}
 					className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform"
 				>
 					{isPlaying ? (
@@ -85,6 +86,7 @@ const Player = () => {
 			<div className="flex items-center gap-3 mt-4">
 				<button
 					onClick={toggleMute}
+						aria-label={volume[0] === 0 ? "Включить звук" : "Выключить звук"}
 					className="p-1 text-muted-foreground hover:text-foreground transition-colors"
 				>
 					{volume[0] === 0 ? (

@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import TrackDetail from "./pages/TrackDetail";
 import {AzuraNowPlaying} from "@/lib/radio-socket.ts";
 import {PlayerProvider} from "@/contexts/PlayerContext";
+import {ScrollManager} from "@/components/ScrollManager";
 
 const queryClient = new QueryClient();
 AzuraNowPlaying(queryClient);
@@ -18,6 +19,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <PlayerProvider>
+        <ScrollManager />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/track/:id" element={<TrackDetail />} />

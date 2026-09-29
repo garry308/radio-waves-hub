@@ -32,7 +32,7 @@ const RecentTracks = () => {
 								style={{backgroundImage: `url(${track.song.art})`}}>
 							</div>
 							<div className="flex-1 min-w-0">
-								<h4 className="text-sm md:text-base font-medium text-foreground truncate">{track.song.title}</h4>
+								<h3 className="text-sm md:text-base font-medium text-foreground truncate">{track.song.title}</h3>
 								<p className="text-sm text-muted-foreground truncate">{track.song.artist}</p>
 							</div>
 							<span

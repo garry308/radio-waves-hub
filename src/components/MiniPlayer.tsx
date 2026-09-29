@@ -24,6 +24,7 @@ const MiniPlayer = () => {
 				<div className="flex items-center gap-4">
 					<button
 						onClick={toggle}
+						aria-label={isPlaying ? "Пауза" : "Слушать эфир"}
 						className="w-11 h-11 rounded-full bg-primary flex items-center justify-center glow-primary hover:scale-105 transition-transform flex-shrink-0"
 					>
 						{isPlaying ? (
@@ -67,6 +68,7 @@ const MiniPlayer = () => {
 
 					<div className="hidden md:flex items-center gap-2 w-40">
 						<button onClick={toggleMute}
+						aria-label={volume[0] === 0 ? "Включить звук" : "Выключить звук"}
 								className="p-1 text-muted-foreground hover:text-foreground transition-colors">
 							{volume[0] === 0 ? <VolumeX className="w-4 h-4"/> : <Volume2 className="w-4 h-4"/>}
 						</button>

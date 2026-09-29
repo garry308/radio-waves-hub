@@ -2,6 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {ArrowLeft, Music, Clock, Disc3, Tag} from "lucide-react";
 import {Layout} from "@/components/Layout";
+import {Helmet} from "react-helmet-async";
 import {defaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useTrackById} from "@/hooks/use-track";
 import {StreamingLinks} from "@/components/StreamingLinks";
@@ -14,6 +15,32 @@ const TrackDetail = () => {
 
 	return (
 		<Layout>
+			{track && (() => {
+				const name = track.title || "Без названия";
+				const artist = track.artist || "Неизвестный исполнитель";
+				const url = `https://audio-atlas-site.lovable.app/track/${id}`;
+				const title = `${artist} — ${name} | Твоя волна`;
+				const desc = `«${name}» — ${artist}${track.album ? `, альбом «${track.album}»` : ""}. Слушайте в эфире «Твоей волны» и на стриминговых сервисах.`;
+				const ld: Record<string, unknown> = {"@context": "https://schema.org", "@type": "MusicRecording", name, byArtist: {"@type": "MusicGroup", name: artist}, url};
+				if (track.album) ld.inAlbum = {"@type": "MusicAlbum", name: track.album};
+				if (track.duration) { const d = Math.round(track.duration); ld.duration = `PT${Math.floor(d / 60)}M${d % 60}S`; }
+				if (track.isrc) ld.isrcCode = track.isrc;
+				if (track.art) ld.image = track.art;
+				return (
+					<Helmet>
+						<title>{title}</title>
+						<meta name="description" content={desc}/>
+						<link rel="canonical" href={url}/>
+						<meta property="og:title" content={title}/>
+						<meta property="og:description" content={desc}/>
+						<meta property="og:url" content={url}/>
+						<meta property="og:type" content="music.song"/>
+						{track.art && <meta property="og:image" content={track.art}/>}
+						{track.art && <meta name="twitter:image" content={track.art}/>}
+						<script type="application/ld+json">{JSON.stringify(ld)}</script>
+					</Helmet>
+				);
+			})()}
 			<section className="py-16 md:py-24">
 				<div className="container mx-auto px-4 max-w-4xl">
 					<Link

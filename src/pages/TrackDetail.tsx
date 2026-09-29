@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {ArrowLeft, Music, Clock, Disc3, Tag} from "lucide-react";
 import {Layout} from "@/components/Layout";
@@ -10,6 +10,7 @@ import {StreamingLinks} from "@/components/StreamingLinks";
 
 const TrackDetail = () => {
 	const {id} = useParams();
+	const navigate = useNavigate();
 	const {data: nowplaying} = useQuery(defaultData);
 	const {track, isLoading} = useTrackById(id, nowplaying);
 
@@ -45,6 +46,9 @@ const TrackDetail = () => {
 				<div className="container mx-auto px-4 max-w-4xl">
 					<Link
 						to="/"
+						onClick={(e) => {
+							if (window.history.state?.idx > 0) { e.preventDefault(); navigate(-1); }
+						}}
 						className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
 					>
 						<ArrowLeft className="w-4 h-4"/>

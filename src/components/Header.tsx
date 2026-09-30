@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Radio, Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -11,6 +11,25 @@ const navItems = [
 export const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const goToAnchor = (e: React.MouseEvent, hash: string) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    const id = hash.slice(1);
+    const scroll = (tries = 0) => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      else if (tries < 40) setTimeout(() => scroll(tries + 1), 50);
+    };
+    if (location.pathname !== "/") {
+      navigate("/" + hash);
+      setTimeout(() => scroll(), 100);
+    } else {
+      window.history.replaceState(window.history.state, "", hash);
+      scroll();
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass">
@@ -32,7 +51,8 @@ export const Header = () => {
             {navItems.map((item, key) => (
               <a
                 key={key}
-                href={item.path}
+                href={"/" + item.path}
+                onClick={(e) => goToAnchor(e, item.path)}
                 className={`relative font-body text-sm font-medium transition-colors duration-200 hover:text-primary text-muted-foreground`}
               >
                 {item.label}
@@ -62,10 +82,10 @@ export const Header = () => {
         <div className="md:hidden glass border-t border-border animate-slide-up">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.path}
-                to={item.path}
-                onClick={() => setIsMenuOpen(false)}
+                href={"/" + item.path}
+                onClick={(e) => goToAnchor(e, item.path)}
                 className={`py-3 px-4 rounded-lg font-body text-sm font-medium transition-all duration-200 ${
                   location.pathname === item.path
                     ? "bg-primary/10 text-primary"
@@ -73,7 +93,7 @@ export const Header = () => {
                 }`}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
         </div>

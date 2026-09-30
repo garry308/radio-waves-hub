@@ -60,6 +60,7 @@ const TrackHistory = () => {
 
   return (
     <div className="container mx-auto px-4 py-20" id="history">
+      <ScrollToTopButton />
       <div className="mb-12">
         <h2 className="font-display text-3xl md:text-4xl text-gradient">История треков</h2>
       </div>

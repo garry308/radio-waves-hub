@@ -6,6 +6,7 @@ import { ru } from "date-fns/locale";
 import { Calendar, Clock, Music, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { secondsToMMSS } from "@/lib/utils";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const timeIntervals = [
   { id: "00-04", label: "00:00 - 04:00", start: 0 },

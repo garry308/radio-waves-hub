@@ -88,7 +88,7 @@ export const StreamingLinks = ({title, artist}: Props) => {
 			<p className="text-sm text-muted-foreground mb-4">
 				Поиск «{query}» в популярных музыкальных сервисах
 			</p>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
 				{services.map((s) => (
 					<a
 						key={s.name}
@@ -99,17 +99,17 @@ export const StreamingLinks = ({title, artist}: Props) => {
 							borderColor: `${s.brand}59`,
 							background: `linear-gradient(135deg, ${s.brand}26, transparent 70%)`,
 						}}
-						className="rounded-xl p-4 border flex items-center gap-3 transition-all duration-200 hover:-translate-y-0.5 group"
+						className="rounded-lg px-2.5 py-2 border flex items-center gap-2 transition-all duration-200 hover:-translate-y-0.5 group"
 					>
 						<span
-							className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0 transition-transform group-hover:scale-110"
+							className="flex items-center justify-center w-7 h-7 rounded-md shrink-0 transition-transform group-hover:scale-110"
 							style={{backgroundColor: `${s.brand}26`, color: s.brand}}
 						>
 							{s.icon}
 						</span>
-						<span className="text-sm font-medium flex-1">{s.name}</span>
+						<span className="text-xs font-medium flex-1 truncate">{s.name}</span>
 						<ExternalLink
-							className="w-4 h-4 opacity-60 transition-opacity group-hover:opacity-100"
+							className="w-3.5 h-3.5 opacity-60 transition-opacity group-hover:opacity-100 shrink-0"
 							style={{color: s.brand}}
 						/>
 					</a>

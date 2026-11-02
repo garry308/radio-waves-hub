@@ -4,6 +4,7 @@ import {defaultData, elapsedDefaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {useQuery} from "@tanstack/react-query";
 import {Link} from "react-router-dom";
 import {usePlayer} from "@/contexts/PlayerContext";
+import {SettingsControl} from "@/components/SettingsControl";
 
 const Player = () => {
 	const {data: nowplaying} = useQuery(defaultData);
@@ -11,8 +12,9 @@ const Player = () => {
 	const {isPlaying, toggle, volume, handleVolumeChange, toggleMute, registerCanvas, showVisualizer} = usePlayer();
 
 	return (
-		<div className={`max-w-md mx-auto glass rounded-2xl p-6 ${showVisualizer ? "pb-0" : "pb-6"} animate-slide-up`}
+		<div className={`relative max-w-md mx-auto glass rounded-2xl p-6 ${showVisualizer ? "pb-0" : "pb-6"} animate-slide-up`}
 			 style={{animationDelay: "0.2s"}}>
+			<SettingsControl className="absolute top-3 right-3 p-1.5" iconClassName="w-4 h-4"/>
 			<div className="flex items-center gap-4">
 				{/* Album Art */}
 				{nowplaying ? (
@@ -28,7 +30,7 @@ const Player = () => {
 					</div>
 				)}
 				{/* Track Info */}
-				<div className="flex-1 text-left min-w-0">
+				<div className="flex-1 text-left min-w-0 pr-9">
 					<p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">Сейчас
 						играет</p>
 					{nowplaying ? (

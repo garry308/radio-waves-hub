@@ -8,10 +8,10 @@ import {usePlayer} from "@/contexts/PlayerContext";
 const Player = () => {
 	const {data: nowplaying} = useQuery(defaultData);
 	const {data: elapsed_time} = useQuery(elapsedDefaultData);
-	const {isPlaying, toggle, volume, handleVolumeChange, toggleMute, registerCanvas} = usePlayer();
+	const {isPlaying, toggle, volume, handleVolumeChange, toggleMute, registerCanvas, showVisualizer} = usePlayer();
 
 	return (
-		<div className="max-w-md mx-auto glass rounded-2xl p-6 pb-0 animate-slide-up"
+		<div className={`max-w-md mx-auto glass rounded-2xl p-6 ${showVisualizer ? "pb-0" : "pb-6"} animate-slide-up`}
 			 style={{animationDelay: "0.2s"}}>
 			<div className="flex items-center gap-4">
 				{/* Album Art */}
@@ -104,11 +104,13 @@ const Player = () => {
 				/>
 				<span className="text-xs text-muted-foreground w-8 text-right">{volume[0]}%</span>
 			</div>
-			<canvas
-				ref={registerCanvas}
-				className="w-full mx-auto max-w-md rounded-2xl h-10 bg-transparent"
-				style={{width: 'calc(100% + 3rem)', marginLeft: '-1.5rem'}}
-			/>
+			{showVisualizer && (
+				<canvas
+					ref={registerCanvas}
+					className="w-full mx-auto max-w-md rounded-2xl h-10 bg-transparent"
+					style={{width: 'calc(100% + 3rem)', marginLeft: '-1.5rem'}}
+				/>
+			)}
 		</div>
 	);
 };

@@ -1,6 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Radio, Menu, X } from "lucide-react";
+import { Radio, Menu, X, Settings, AudioWaveform } from "lucide-react";
 import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Switch } from "@/components/ui/switch";
+import { usePlayer } from "@/contexts/PlayerContext";
 
 const navItems = [
   { label: "Главная", path: "#header" },
@@ -11,7 +14,9 @@ const navItems = [
 export const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
+  const { showVisualizer, setShowVisualizer } = usePlayer();
 
   const goToAnchor = (e: React.MouseEvent, hash: string) => {
     e.preventDefault();
@@ -60,10 +65,48 @@ export const Header = () => {
             ))}
           </nav>
 
-          {/* Live Badge */}
-          <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-destructive/20 border border-destructive/40">
-            <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
-            <span className="text-xs font-semibold text-destructive uppercase tracking-wider">В эфире</span>
+          <div className="flex items-center gap-3">
+            {/* Live Badge */}
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-destructive/20 border border-destructive/40">
+              <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+              <span className="text-xs font-semibold text-destructive uppercase tracking-wider">В эфире</span>
+            </div>
+
+            {/* Settings */}
+            <Popover open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  aria-label="Настройки"
+                  aria-expanded={isSettingsOpen}
+                  className={`p-2 rounded-full border border-transparent transition-all duration-300 hover:text-primary hover:border-border hover:bg-secondary ${
+                    isSettingsOpen ? "text-primary border-border bg-secondary rotate-45" : "text-muted-foreground"
+                  }`}
+                >
+                  <Settings className="w-5 h-5" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 p-4 rounded-2xl">
+                <p className="font-display text-base text-foreground mb-3">Настройки</p>
+                <div className="flex items-center justify-between gap-4 py-2">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 text-primary">
+                      <AudioWaveform className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Саундбар</p>
+                      <p className="text-xs text-muted-foreground leading-snug">
+                        Анимация звука под плеером
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={showVisualizer}
+                    onCheckedChange={setShowVisualizer}
+                    aria-label="Показывать саундбар"
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Mobile Menu Button */}

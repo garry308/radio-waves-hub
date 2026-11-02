@@ -13,6 +13,8 @@ interface PlayerContextValue {
 	handleVolumeChange: (v: number[]) => void;
 	toggleMute: () => void;
 	registerCanvas: (canvas: HTMLCanvasElement | null) => void;
+	showVisualizer: boolean;
+	setShowVisualizer: (v: boolean) => void;
 }
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
@@ -31,10 +33,16 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 		const v = Number(localStorage.getItem("player_last_volume"));
 		return v > 0 && v <= 100 ? [v] : [75];
 	});
+	const [showVisualizer, setShowVisualizer] = useState<boolean>(
+		() => localStorage.getItem("player_visualizer") !== "0"
+	);
 	useEffect(() => {
 		localStorage.setItem("player_volume", String(volume[0]));
 		localStorage.setItem("player_last_volume", String(lastVolume[0]));
 	}, [volume, lastVolume]);
+	useEffect(() => {
+		localStorage.setItem("player_visualizer", showVisualizer ? "1" : "0");
+	}, [showVisualizer]);
 	const {data: nowplaying} = useQuery(defaultData);
 	const playRef = useRef<() => void>(() => {});
 	const pauseRef = useRef<() => void>(() => {});
@@ -166,7 +174,7 @@ export const PlayerProvider = ({children}: {children: ReactNode}) => {
 
 	return (
 		<PlayerContext.Provider
-			value={{isPlaying, volume, play, pause, toggle, handleVolumeChange, toggleMute, registerCanvas}}>
+			value={{isPlaying, volume, play, pause, toggle, handleVolumeChange, toggleMute, registerCanvas, showVisualizer, setShowVisualizer}}>
 			<audio ref={audioRef} preload="none" crossOrigin="anonymous"/>
 			{children}
 		</PlayerContext.Provider>

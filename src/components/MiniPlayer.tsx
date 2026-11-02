@@ -4,6 +4,7 @@ import {useQuery} from "@tanstack/react-query";
 import {Link} from "react-router-dom";
 import {defaultData, elapsedDefaultData, secondsToMMSS} from "@/lib/utils.ts";
 import {usePlayer} from "@/contexts/PlayerContext";
+import {SettingsControl} from "@/components/SettingsControl";
 
 const MiniPlayer = () => {
 	const {data: nowplaying} = useQuery(defaultData);

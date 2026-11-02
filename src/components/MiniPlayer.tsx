@@ -76,6 +76,8 @@ const MiniPlayer = () => {
 						<Slider value={volume} onValueChange={handleVolumeChange} max={100} step={1}
 								className="flex-1"/>
 					</div>
+
+					<SettingsControl className="p-1.5 -mr-1" iconClassName="w-4 h-4" align="end" side="top"/>
 				</div>
 			</div>
 		</div>

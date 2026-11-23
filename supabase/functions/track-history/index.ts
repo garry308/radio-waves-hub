@@ -1,6 +1,6 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 
-const API = 'https://backend.your-wave.ru/api/station/your_wave/history'
+const API = 'https://backend.your-wave.ru/api/station/1/history'
 const MAX_RANGE = 24 * 3600 * 1000
 
 Deno.serve(async (req) => {

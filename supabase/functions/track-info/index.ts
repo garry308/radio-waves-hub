@@ -1,6 +1,6 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 
-const API = 'https://backend.your-wave.ru/api/station/your_wave/files'
+const API = 'https://backend.your-wave.ru/api/station/1/files'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
